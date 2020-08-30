@@ -15,6 +15,17 @@ mongoose.connection.once('open', () => {
   console.log('connected to database');
 });
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'
+  );
+  next();
+});
+
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -23,6 +34,4 @@ app.use(
   })
 );
 
-app.listen(5000, () => {
-  console.log('listening for requests on port 5000');
-});
+app.listen(process.env.PORT || 5000);
